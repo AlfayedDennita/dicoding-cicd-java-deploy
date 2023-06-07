@@ -22,8 +22,8 @@ jobs:
         mvn clean install
 
     - name: Run Java application
-      shell: cmd
+      shell: bash
       run: |
-        $NAME = mvn help:evaluate -Dexpression=project.name
-        $VERSION = mvn help:evaluate -Dexpression=project.version
-        java -jar target/$NAME-$VERSION.jar
+        NAME=`mvn help:evaluate -Dexpression=project.name | grep "^[^\[]"`
+        VERSION=`mvn help:evaluate -Dexpression=project.version | grep "^[^\[]"`
+        java -jar target/${NAME}-${VERSION}.jar
