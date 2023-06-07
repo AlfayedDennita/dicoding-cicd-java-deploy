@@ -17,7 +17,7 @@ node {
             sleep time: 1, unit: 'MINUTES'
         }
     }
-    stage('Push to GitHub') {
+    stage('Deploy GitHub') {
         withCredentials([gitUsernamePassword(credentialsId: 'alfayeddennita-github-token', gitToolName: 'Default')]) {
             sh 'git config --global user.name "Jenkins Pipeline"'
             sh 'git config --global user.email "jenkins@localhost"'

@@ -1,0 +1,26 @@
+name: Run Java
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+
+    - name: Build and install Maven project
+      run: |
+        mvn clean install
+
+    - name: Run Java application
+      run: |
+        NAME=$(mvn help:evaluate -Dexpression=project.name | grep "^[^\[]")
+        VERSION=$(mvn help:evaluate -Dexpression=project.version | grep "^[^\[]")
+        java -jar target/${NAME}-${VERSION}.jar
