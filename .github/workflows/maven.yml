@@ -22,6 +22,7 @@ jobs:
         mvn clean install
 
     - name: Run Java application
+      shell: cmd
       run: |
         $NAME = mvn help:evaluate -Dexpression=project.name
         $VERSION = mvn help:evaluate -Dexpression=project.version
