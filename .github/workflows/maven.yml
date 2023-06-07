@@ -21,9 +21,14 @@ jobs:
       run: |
         mvn clean install
 
+    - name: Install xmlstarlet
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xmlstarlet
+
     - name: Run Java application
       run: |
-        NAME=$(xmllint --xpath 'string(/project/name)' pom.xml)
+        NAME=$(xmlstarlet sel -t -v "/project/name" pom.xml)
         # VERSION=`mvn help:evaluate -Dexpression=project.version -DforceStdout`
         echo $NAME
         # echo $VERSION
