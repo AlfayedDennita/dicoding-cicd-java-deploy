@@ -21,14 +21,13 @@ jobs:
       run: |
         mvn clean install
 
-    - name: Install xmlstarlet
+    - name: Install manual libraries
       run: |
-        sudo apt-get update
-        sudo apt-get install -y xmlstarlet
+        mvn install:install-file -Dfile=lib/xyz.jar -DgroupId=com.xyz-DartifactId=xyz -Dversion=8.3.0 -Dpackaging=jar
 
     - name: Run Java application
       run: |
-        NAME=$(xmlstarlet sel -t -v "/project/name" pom.xml)
+        NAME=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         # VERSION=`mvn help:evaluate -Dexpression=project.version -DforceStdout`
         echo $NAME
         # echo $VERSION
