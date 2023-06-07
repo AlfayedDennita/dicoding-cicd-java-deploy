@@ -1,4 +1,6 @@
 node {
+    checkout scm
+
     docker.image('maven:3.9.0').inside('-v /root/.m2:/root/.m2') {
         stage('Build') {
             sh 'mvn -B -DskipTests clean package'
@@ -8,11 +10,20 @@ node {
             junit 'target/surefire-reports/*.xml'
         }
         stage('Manual Approval') {
-            input message: 'Lanjutkan ke tahap deploy?'
+            input message: 'Lanjutkan ke tahap Deploy?'
         }
         stage('Deploy') {
             sh './jenkins/scripts/deliver.sh'
             sleep time: 1, unit: 'MINUTES'
+        }
+    }
+    stage('Deploy Vercel') {
+        withCredentials([gitUsernamePassword(credentialsId: 'alfayeddennita-github-token', gitToolName: 'Default')]) {
+            sh 'git config --global user.name "Jenkins Pipeline"'
+            sh 'git config --global user.email "jenkins@localhost"'
+            sh 'git add .'
+            sh 'git commit -m "Deploy from Jenkins pipeline"'
+            sh 'git push -f https://github.com/AlfayedDennita/dicoding-cicd-java-deploy.git HEAD:main'
         }
     }
 }
