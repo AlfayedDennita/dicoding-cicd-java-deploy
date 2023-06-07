@@ -23,6 +23,6 @@ jobs:
 
     - name: Run Java application
       run: |
-        NAME='mvn help:evaluate -Dexpression=project.name -DforceStdout'
-        VERSION='mvn help:evaluate -Dexpression=project.version -DforceStdout'
+        NAME=`mvn help:evaluate -Dexpression=project.name -DforceStdout`
+        VERSION=`mvn help:evaluate -Dexpression=project.version -DforceStdout`
         java -jar target/${NAME}-${VERSION}.jar
